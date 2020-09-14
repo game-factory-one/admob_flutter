@@ -46,12 +46,20 @@ class AdmobFlutterPlugin(private val context: Context): MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: Result) {
     when(call.method) {
       "initialize" -> {
+        val args = call.arguments as HashMap<*, *>
+        val testDeviceIds = args["testDeviceIds"]
+        val volume = args["volume"].toString().toFloat()
+        val muted = args["muted"] as Boolean
+
         MobileAds.initialize(context)
-        @Suppress("UNCHECKED_CAST")
-        (call.arguments as? ArrayList<String>)?.apply {
-            val configuration = RequestConfiguration.Builder().setTestDeviceIds(this).build()
-            MobileAds.setRequestConfiguration(configuration)
+
+        (testDeviceIds as? ArrayList<String>)?.apply {
+          val configuration = RequestConfiguration.Builder().setTestDeviceIds(this).build()
+          MobileAds.setRequestConfiguration(configuration)
         }
+
+        MobileAds.setAppVolume(volume)
+        MobileAds.setAppMuted(muted)
       }
       "banner_size" -> {
         val args = call.arguments as HashMap<*, *>

@@ -6,10 +6,14 @@ import 'package:admob_flutter/admob_flutter.dart';
 class Admob {
   static const _channel = MethodChannel('admob_flutter');
 
-  Admob.initialize({List<String> testDeviceIds}) {
-    _channel.invokeMethod('initialize', testDeviceIds);
+  Admob.initialize({List<String> testDeviceIds, double volume=1.0, bool muted=false}) {
+    _channel.invokeMethod('initialize', {
+      'testDeviceIds': testDeviceIds,
+      'volume': volume,
+      'muted': muted,
+    });
   }
-  
+
   static Future<bool> requestTrackingAuthorization() {
 	  if (!Platform.isIOS) {
 		  return Future<bool>.value(true);

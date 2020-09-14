@@ -38,13 +38,22 @@ public class SwiftAdmobFlutterPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case "initialize":
+        guard let args = call.arguments as? [String: Any],
+            let testDeviceIds = args["testDeviceIds"] as? [String],
+            let volume = args["volume"] as? float,
+            let muted = args["muted"] as? bool
+
+        GADMobileAds.sharedInstance().applicationVolume = volume
+        GADMobileAds.sharedInstance().applicationMuted = muted
+
         // https://developers.google.com/admob/ios/test-ads#enable_test_devices
         // **iOS simulators are automatically configured as test devices.**
         GADMobileAds.sharedInstance().start { (status: GADInitializationStatus) in
             print("iOS Admob status: \(status.adapterStatusesByClassName)")
         }
-        if let args = call.arguments as? [String] {
-            GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = args
+
+        if testDeviceIds {
+            GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = testDeviceIds
         }
 	case "request_tracking_authorization":
 		if #available(iOS 14, *) {

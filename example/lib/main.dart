@@ -14,6 +14,12 @@ void main() {
   // Add a list of test ids.
   // Admob.initialize(testDeviceIds: ['YOUR DEVICE ID']);
 
+  // Adjust the volume of video ads
+  // Admob.initialize(volume: 0.5); // Set volume to be half of current device volume
+
+  // Mute the audio of video ads
+  // Admob.initialize(muted: true);
+
   runApp(MyMaterialApp());
 }
 
